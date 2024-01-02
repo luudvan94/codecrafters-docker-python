@@ -1,15 +1,22 @@
 import subprocess
+import tempfile
 import sys
 import os
+import shutil
 
 
 def main():
-    # print("Logs from your program will appear here!")
     command = sys.argv[3]
     args = sys.argv[4:]
 
+    dirpath = tempfile.mkdtemp()
+    shutil.copy2(command, dirpath)
+    os.chroot(dirpath)
+    new_command = "/" + os.path.basename(command)
+    
+
     completed_process = subprocess.Popen(
-        [command, *args], stdout=subprocess.PIPE, stderr=subprocess.PIPE
+        [new_command, *args], capture_output=True, check=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE
     )
     stdout, stderr = completed_process.communicate()
     sys.stdout.write(stdout.decode("utf-8"))
