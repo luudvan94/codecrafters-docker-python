@@ -1,5 +1,6 @@
 import subprocess
 import sys
+import os
 
 
 def main():
@@ -14,6 +15,7 @@ def main():
     sys.stdout.write(stdout.decode("utf-8"))
     sys.stderr.write(stderr.decode("utf-8"))
 
+    sys.exit(completed_process.returncode)
 
 if __name__ == "__main__":
     main()
